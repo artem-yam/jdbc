@@ -4,7 +4,7 @@
 <html>
 <head>
 	<c:choose>
-    	<c:when test="${userAction eq 'login'}">
+    	<c:when test="${userAction eq 'firstName'}">
 			<title>Добро пожаловать</title>
     	</c:when>    
    	 	<c:otherwise>
@@ -58,7 +58,7 @@
 	
 	
 	<div id="content">
-		<c:if test="${userAction eq 'login'}">
+		<c:if test="${userAction eq 'firstName'}">
 			<h4>Добро пожаловать</h4>
 			<hr />
 			Здравствуйте, <b>${currentUser.getUserData().getFullName().getLastName()}

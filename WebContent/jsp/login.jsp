@@ -7,9 +7,9 @@
 <body>
 	<form name="loginForm" method="POST" 
 		action="${pageContext.request.contextPath}/FrontController">
-		<input type="hidden" name="command" value="login" /> Login:<br /> 
-		<input type="text" name="login" value="" /> <br />Password:<br /> 
-		<input type="password" name="password" value="" /> <br />
+		<input type="hidden" name="command" value="firstName" /> Login:<br />
+		<input type="text" name="firstName" value="" /> <br />Password:<br />
+		<input type="lastName" name="lastName" value="" /> <br />
 		${errorLoginPassMessage} <br /> 
 		${wrongAction} <br /> 
 		${nullPage} <br />

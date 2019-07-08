@@ -7,7 +7,7 @@
 	<servlet>
 		<display-name>FrontController</display-name>
 		<servlet-name>FrontController</servlet-name>
-		<servlet-class>ru.rsreu.Yamschikov.FrontController</servlet-class>
+		<servlet-class>com.epam.jdbc.FrontController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FrontController</servlet-name>
@@ -28,11 +28,11 @@
 		<session-timeout>10</session-timeout>
 	</session-config>
 	<listener>
-		<listener-class>ru.rsreu.Yamschikov.SessionListener</listener-class>
+		<listener-class>com.epam.jdbc.SessionListener</listener-class>
 	</listener>
 	<filter>
 		<filter-name>NullSessionFilter</filter-name>
-		<filter-class>ru.rsreu.Yamschikov.filter.NullSessionFilter</filter-class>
+		<filter-class>com.epam.jdbc.filter.NullSessionFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>NullSessionFilter</filter-name>
@@ -41,7 +41,7 @@
 	</filter-mapping>
 	<filter>
 		<filter-name>AnonymousSecurityFilter</filter-name>
-		<filter-class>ru.rsreu.Yamschikov.filter.AnonymousSecurityFilter</filter-class>
+		<filter-class>com.epam.jdbc.filter.AnonymousSecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>AnonymousSecurityFilter</filter-name>
@@ -50,7 +50,7 @@
 	</filter-mapping>
 	<filter>
 		<filter-name>UserRightsSecurityFilter</filter-name>
-		<filter-class>ru.rsreu.Yamschikov.filter.UserRightsSecurityFilter</filter-class>
+		<filter-class>com.epam.jdbc.filter.UserRightsSecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>UserRightsSecurityFilter</filter-name>
