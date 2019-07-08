@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="WebApp_ID" version="3.0">
+    <display-name>WebApp</display-name>
+    <servlet>
+        <display-name>FrontController</display-name>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>com.epam.jdbc.FrontController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+    <listener>
+        <listener-class>com.epam.jdbc.SessionListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>NullSessionFilter</filter-name>
+        <filter-class>com.epam.jdbc.filter.NullSessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NullSessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <servlet-name>FrontController</servlet-name>
+    </filter-mapping>
+    <filter>
+        <filter-name>AnonymousSecurityFilter</filter-name>
+        <filter-class>com.epam.jdbc.filter.AnonymousSecurityFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AnonymousSecurityFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <servlet-name>FrontController</servlet-name>
+    </filter-mapping>
+    <filter>
+        <filter-name>UserRightsSecurityFilter</filter-name>
+        <filter-class>com.epam.jdbc.filter.UserRightsSecurityFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserRightsSecurityFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <servlet-name>FrontController</servlet-name>
+    </filter-mapping>
+
+    <resource-ref>
+        <description>Oracle Datasource example</description>
+        <res-ref-name>jdbc/myoracle</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+</web-app>

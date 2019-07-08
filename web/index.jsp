@@ -2,6 +2,7 @@
 <html>
 <head><title>Index</title></head>
 <body>
-	<jsp:forward page="/jsp/firstName.jsp" />
+	<%--<jsp:forward page="/jsp/login.jsp" />--%>
+	<h1>Hellooooo!</h1>
 </body>
 </html>
