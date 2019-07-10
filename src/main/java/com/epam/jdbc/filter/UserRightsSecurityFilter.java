@@ -11,7 +11,7 @@ public class UserRightsSecurityFilter implements Filter {
      */
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         /*HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
@@ -71,8 +71,9 @@ public class UserRightsSecurityFilter implements Filter {
                 }
             }
         }
-        
-        chain.doFilter(request, response);
         */
+
+        chain.doFilter(request, response);
+
     }
 }
