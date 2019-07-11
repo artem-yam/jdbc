@@ -15,7 +15,7 @@ public class MainPageCommand implements ActionCommand {
 
 		request.getSession().setAttribute("activityList", scientificActivityDAO.getAllActivities());
 */
-        String page = ("path.page.main");
+        String page = ("/main.jsp");
         
         GoToPageHandler handler =
             new GoToPageHandler(GoToPageMethodEnum.FORWARD, page);

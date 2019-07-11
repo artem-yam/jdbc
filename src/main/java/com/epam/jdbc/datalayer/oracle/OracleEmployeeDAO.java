@@ -4,14 +4,17 @@ import com.epam.jdbc.datalayer.EmployeeDAO;
 import com.epam.jdbc.datalayer.dto.Employee;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OracleEmployeeDAO implements EmployeeDAO {
+    private static final String SELECT_ALL = "SELECT * FROM EMPLOYEES";
+    private static final String CREATE_EMPLOYEE =
+        "INSERT INTO EMPLOYEES(EMPLOYEEID,LASTNAME,FIRSTNAME) VALUES (?,?,?)";
+    private static final String SELECT_EMPLOYEE_NEXT_ID =
+        "SELECT EMPLOYEES_SEQ.NEXTVAL FROM dual";
+    
     private DataSource dataSource;
     
     public OracleEmployeeDAO(DataSource dataSource) {
@@ -20,76 +23,46 @@ public class OracleEmployeeDAO implements EmployeeDAO {
     
     @Override
     public List<Employee> getAllEmployees() {
-        List<Employee> lst = new ArrayList<Employee>();
+        List<Employee> employees = new ArrayList<>();
         
-        try {
-            Statement st = null;
-            try {
-                st = dataSource.getConnection().createStatement();
-                ResultSet rs = null;
-                try {
-                    rs = st.executeQuery(
-                        ("request.users.select.all.orderbystatus"));
+        try (Connection con = dataSource.getConnection()) {
+            try (Statement st = con.createStatement()) {
+                try (ResultSet rs = st.executeQuery(SELECT_ALL)) {
                     
-                    //lst = formUserList(rs);
-                    
-                    if (lst.size() > 0) {
-                        System.out.println(lst);
-                    } else {
-                        System.out.println("Not found");
+                    while (rs.next()) {
+                        employees.add(
+                            new Employee(rs.getString(3), rs.getString(2)));
                     }
-                } finally {
-                    if (rs != null) {
-                        rs.close();
-                    } else {
-                        System.err.println("ошибка во время чтения из БД");
-                    }
-                }
-            } finally {
-                if (st != null) {
-                    st.close();
-                } else {
-                    System.err.println("Statement не создан");
                 }
             }
         } catch (SQLException e) {
-            System.err.println("DB connection error: " + e);
+            e.printStackTrace();
         }
         
-        return lst;
+        return employees;
     }
     
-    @Override public void createEmployee(String firstName, String lastName) {
-        PreparedStatement ps = null;
-        try {
-           /* int id = getNextId();
-            
-            ps = dataSource.getConnection()
-                     .prepareStatement(("request.users.insert"));
-            ps.setInt(1, id);
-            ps.setString(2, userLogin);
-            ps.setString(3, userPass);
-            ps.setString(4, userData.getFullName().getLastName());
-            ps.setString(5, userData.getFullName().getFirstName());
-            ps.setString(6, userData.getFullName().getMiddleName());
-            ps.setString(7, userType);
-            ps.setString(8, userData.getPhoneNumber());
-            ps.setString(9, userData.getExtraInfo());
-            ps.setString(10, "offline");
-            ps.setString(11, userData.getDepartmentName());
-            ps.setString(12, userData.getDegreeAndPost());
-            */
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("DB connection error: " + e);
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+    @Override
+    public void createEmployee(String firstName, String lastName) {
+        
+        try (Connection con = dataSource.getConnection()) {
+            try (PreparedStatement ps = con.prepareStatement(
+                CREATE_EMPLOYEE)) {
+                try (Statement st = con.createStatement()) {
+                    try (ResultSet rs = st.executeQuery(
+                        SELECT_EMPLOYEE_NEXT_ID)) {
+                        rs.next();
+                        System.out.println("New id = " + rs.getLong(1));
+                        ps.setLong(1, rs.getLong(1));
+                    }
                 }
+                ps.setString(2, lastName);
+                ps.setString(3, firstName);
+                
+                ps.execute();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     

@@ -11,15 +11,15 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/FrontController</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
     <session-config>
         <session-timeout>10</session-timeout>
     </session-config>
-    <listener>
+    <!--<listener>
         <listener-class>com.epam.jdbc.SessionListener</listener-class>
     </listener>
 
@@ -53,7 +53,7 @@
         <filter-name>UserRightsSecurityFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <servlet-name>FrontController</servlet-name>
-    </filter-mapping>
+    </filter-mapping>-->
 
     <resource-ref>
         <description>Oracle Datasource example</description>
