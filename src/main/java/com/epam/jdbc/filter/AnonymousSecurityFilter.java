@@ -10,6 +10,11 @@ import java.io.IOException;
 
 public class AnonymousSecurityFilter implements Filter {
     
+    @Override public void init(FilterConfig filterConfig)
+        throws ServletException {
+        
+    }
+    
     /**
      * Method what realizes filtration of request: checks if user tries to
      * interact with servlet with no log in
@@ -61,5 +66,9 @@ public class AnonymousSecurityFilter implements Filter {
         }
         
         chain.doFilter(request, response);
+    }
+    
+    @Override public void destroy() {
+    
     }
 }

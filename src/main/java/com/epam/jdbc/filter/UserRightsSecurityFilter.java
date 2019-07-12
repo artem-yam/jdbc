@@ -4,6 +4,11 @@ import javax.servlet.*;
 import java.io.IOException;
 
 public class UserRightsSecurityFilter implements Filter {
+    @Override public void init(FilterConfig filterConfig)
+        throws ServletException {
+        
+    }
+    
     /**
      * Method what realizes filtration of request: checks if user tries to
      * interact with servlet with commands which are not enable for this type of
@@ -11,7 +16,7 @@ public class UserRightsSecurityFilter implements Filter {
      */
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         /*HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
@@ -72,8 +77,12 @@ public class UserRightsSecurityFilter implements Filter {
             }
         }
         */
-
+        
         chain.doFilter(request, response);
-
+        
+    }
+    
+    @Override public void destroy() {
+    
     }
 }

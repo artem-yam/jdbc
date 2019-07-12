@@ -10,10 +10,11 @@ import java.util.List;
 public final class Test {
     
     public static void main(String... args) {
+        
         DAOFactory dao = DAOFactory.getInstance(DAOType.ORACLE);
         EmployeeDAO empDAO = dao.getEmployeeDAO();
         
-        empDAO.createEmployee("John", "Doe");
+        //empDAO.createEmployee("John", "Doe");
     
         List<Employee> employees = empDAO.getAllEmployees();
     

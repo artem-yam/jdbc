@@ -21,11 +21,22 @@ public class OracleEmployeeDAO implements EmployeeDAO {
         this.dataSource = dataSource;
     }
     
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+    
     @Override
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
-        
-        try (Connection con = dataSource.getConnection()) {
+    
+        Connection con=null;
+        try {
+            con = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        /*try (Connection con = ((OracleDataSource)dataSource).getConnection()) {*/
             try (Statement st = con.createStatement()) {
                 try (ResultSet rs = st.executeQuery(SELECT_ALL)) {
                     
@@ -35,7 +46,7 @@ public class OracleEmployeeDAO implements EmployeeDAO {
                     }
                 }
             }
-        } catch (SQLException e) {
+       /* }*/ catch (SQLException e) {
             e.printStackTrace();
         }
         

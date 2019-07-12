@@ -8,6 +8,11 @@ import java.io.IOException;
 
 public class NullSessionFilter implements Filter {
     
+    @Override public void init(FilterConfig filterConfig)
+        throws ServletException {
+        
+    }
+    
     /**
      * Method what realizes filtration of request: checks if session was
      * destroyed and not created yet
@@ -48,5 +53,9 @@ public class NullSessionFilter implements Filter {
         }
         
         chain.doFilter(request, response);
+    }
+    
+    @Override public void destroy() {
+    
     }
 }
