@@ -7,8 +7,8 @@
     <servlet>
         <display-name>JDBC</display-name>
         <servlet-name>JDBC</servlet-name>
-        <servlet-class>com.epam.jdbc.FrontController</servlet-class>
-        <init-param>                                    <!-- this should be added -->
+        <servlet-class>com.epam.jdbc.Servlet</servlet-class>
+        <init-param>
             <param-name>compilerSourceVM</param-name>
             <param-value>1.8</param-value>
         </init-param>
@@ -16,6 +16,7 @@
             <param-name>compilerTargetVM</param-name>
             <param-value>1.8</param-value>
         </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>JDBC</servlet-name>
@@ -24,44 +25,14 @@
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
-    <!--<session-config>
-        <session-timeout>10</session-timeout>
-    </session-config>-->
-    <!--<listener>
+
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+    <listener>
         <listener-class>com.epam.jdbc.SessionListener</listener-class>
     </listener>
 
-    <filter>
-        <filter-name>NullSessionFilter</filter-name>
-        <filter-class>com.epam.jdbc.filter.NullSessionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>NullSessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <servlet-name>FrontController</servlet-name>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>AnonymousSecurityFilter</filter-name>
-        <filter-class>com.epam.jdbc.filter.AnonymousSecurityFilter
-        </filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AnonymousSecurityFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <servlet-name>FrontController</servlet-name>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>UserRightsSecurityFilter</filter-name>
-        <filter-class>com.epam.jdbc.filter.UserRightsSecurityFilter
-        </filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>UserRightsSecurityFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <servlet-name>FrontController</servlet-name>
-    </filter-mapping>-->
 
     <resource-ref>
         <description>DB Connection</description>

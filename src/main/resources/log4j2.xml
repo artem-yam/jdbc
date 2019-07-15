@@ -7,8 +7,9 @@
                            pattern="%d %5p %c %m %n"/>
         </Console>
 
-        <RollingFile name="FILE-DEBUG" fileName="log.log"
+        <RollingFile name="SESSION-INFO" fileName="jdbcLogs/log.log"
                      filePattern="log_%i.log">
+
             <PatternLayout charset="UTF-8"
                            pattern="%d %5p %c %m %n"/>
             <Policies>
@@ -23,7 +24,7 @@
 
         <root level="trace">
             <appender-ref ref="CONSOLE-INFO" level="info"/>
-            <appender-ref ref="FILE-DEBUG" level="debug"/>
+            <appender-ref ref="SESSION-INFO" level="info"/>
         </root>
 
     </Loggers>
