@@ -27,7 +27,7 @@
     </welcome-file-list>
 
     <session-config>
-        <session-timeout>1</session-timeout>
+        <session-timeout>10</session-timeout>
     </session-config>
     <listener>
         <listener-class>com.epam.jdbc.SessionListener</listener-class>

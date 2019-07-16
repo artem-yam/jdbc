@@ -19,7 +19,7 @@
         </fieldset>
     </form>
 
-    Employees list: <br/>
+    Employees list: <br/> <br/>
 
     <c:forEach var="emp" items="${employeeDAO.getAllEmployees()}">
         ${emp.getFirstName()} ${emp.getLastName()}<br/>
