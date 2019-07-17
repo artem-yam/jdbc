@@ -8,5 +8,5 @@ public interface EmployeeDAO {
     
     List<Employee> getAllEmployees();
     
-    void createEmployee(String firstName, String lastName);
+    Employee createEmployee(String firstName, String lastName);
 }

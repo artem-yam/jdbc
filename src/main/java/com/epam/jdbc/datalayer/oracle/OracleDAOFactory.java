@@ -13,27 +13,33 @@ import java.util.Locale;
 
 public class OracleDAOFactory implements DAOFactory {
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     private static final String DATA_SOURCE_NAME = "java:/comp/env/jdbc/MyDB";
-    private static OracleDAOFactory instance;
+    private static volatile OracleDAOFactory instance;
     private DataSource dataSource;
-
+    
     private OracleDAOFactory() {
     }
-
+    
     public static OracleDAOFactory getInstance() {
-        if (instance == null) {
-            instance = new OracleDAOFactory();
-            instance.getDataSource();
+        OracleDAOFactory factory = instance;
+        if (factory == null) {
+            synchronized (OracleDAOFactory.class) {
+                factory = instance;
+                if (factory == null) {
+                    instance = factory = new OracleDAOFactory();
+                    factory.getDataSource();
+                }
+            }
         }
-        return instance;
+        return factory;
     }
-
+    
     private void getDataSource() {
         Locale.setDefault(Locale.ENGLISH);
-
+        
         Context ctx;
         try {
             ctx = new InitialContext();
@@ -43,7 +49,7 @@ public class OracleDAOFactory implements DAOFactory {
             logger.error("Error while receiving data source object" + e);
         }
     }
-
+    
     @Override
     public EmployeeDAO getEmployeeDAO() {
         return new OracleEmployeeDAO(dataSource);

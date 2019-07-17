@@ -2,12 +2,22 @@ package com.epam.jdbc.datalayer.dto;
 
 public class Employee {
     
-    private String firstName;
+    private long id;
     private String lastName;
+    private String firstName;
     
-    public Employee(String firstName, String lastName) {
-        this.firstName = firstName;
+    public Employee(long id, String lastName, String firstName) {
+        this.id = id;
         this.lastName = lastName;
+        this.firstName = firstName;
+    }
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
     }
     
     public String getFirstName() {
