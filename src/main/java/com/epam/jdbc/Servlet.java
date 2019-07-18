@@ -14,36 +14,36 @@ import java.io.IOException;
  * Simple servlet
  */
 public class Servlet extends HttpServlet {
-
+    
     /**
      * Servlet serialVersionUID
      */
     private static final long serialVersionUID = 1L;
-
+    
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
+        throws ServletException, IOException {
+        
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(req);
-
+        
         GoToPageHandler pageHandler = command.execute(req);
-
+        
         if (pageHandler != null) {
-
+            
             GoToPageMethodEnum method = pageHandler.getMethod();
-
+            
             switch (method) {
                 case FORWARD:
                     RequestDispatcher dispatcher = getServletContext()
-                            .getRequestDispatcher(
-                                    pageHandler
-                                            .getPage());
+                                                       .getRequestDispatcher(
+                                                           pageHandler
+                                                               .getPage());
                     dispatcher.forward(req, resp);
                     break;
                 case REDIRECT:
                     resp.sendRedirect(
-                            req.getContextPath() + pageHandler.getPage());
+                        req.getContextPath() + pageHandler.getPage());
                     break;
                 default:
                     break;
@@ -52,5 +52,5 @@ public class Servlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath());
         }
     }
-
+    
 }

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,19 +17,9 @@ public class OracleEmployeeDAOResultSetsGetter implements AutoCloseable {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
-    /**
-     * Select all employees query
-     */
-    private static final String SELECT_ALL_EMPLOYEES =
-            "SELECT * FROM EMPLOYEES";
-    /**
-     * Create new employee query
-     */
-    private static final String CREATE_EMPLOYEE_QUERY =
-            "INSERT INTO EMPLOYEES(EMPLOYEEID,LASTNAME,FIRSTNAME) VALUES (EMPLOYEES_SEQ.NEXTVAL,?,?)";
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     /**
      * Number of parameter for last name
      */
@@ -37,48 +28,53 @@ public class OracleEmployeeDAOResultSetsGetter implements AutoCloseable {
      * Number of parameter for first name
      */
     private static final int FIRST_NAME_PARAMETER_NUMBER = 2;
-
+    
     /**
-     * Data source to connect DB
+     * DD connection
      */
-    private DataSource dataSource;
-
+    private Connection connection;
+    
+    /**
+     * Prepared Statement
+     */
+    private PreparedStatement ps;
+    
     /**
      * Constructor
      *
      * @param dataSource {@link DataSource}
      */
-    public OracleEmployeeDAOResultSetsGetter(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public OracleEmployeeDAOResultSetsGetter(DataSource dataSource)
+        throws SQLException {
+        this.connection = dataSource.getConnection();
     }
-
+    
     /**
      * Executes query to get all employees
      *
      * @return Query {@link ResultSet}
      * @throws SQLException DB error
      */
-    @DBQuery(text = SELECT_ALL_EMPLOYEES)
+    @DBQuery(text = "SELECT * FROM EMPLOYEES")
+    @SuppressWarnings("findsecbugs:SQL_INJECTION_JDBC")
     public ResultSet getAllEmployees() throws SQLException {
-
-        String queryText = "";
-        try {
-            queryText = getClass().getDeclaredMethod("getAllEmployees")
-                    .getAnnotation(DBQuery.class).text();
-        } catch (NoSuchMethodException noSuchMethodException) {
-            logger.error("Method wasn't found", noSuchMethodException);
-        }
-
+        
+        String queryText =
+            new Object() {
+            }.getClass().getEnclosingMethod().getAnnotation(DBQuery.class)
+                .text();
+        
         logger.debug("Executing query {}", queryText);
-
-        ResultSet rs = dataSource.getConnection().createStatement()
-                .executeQuery(queryText);
-
+        
+        ps = connection.prepareStatement(queryText);
+        
+        ResultSet rs = ps.executeQuery();
+        
         logger.debug("Returning result set {}", rs);
-
+        
         return rs;
     }
-
+    
     /**
      * Executes query to create new employee
      *
@@ -87,39 +83,41 @@ public class OracleEmployeeDAOResultSetsGetter implements AutoCloseable {
      * @return Query {@link ResultSet}
      * @throws SQLException DB error
      */
-    @DBQuery(text = CREATE_EMPLOYEE_QUERY)
+    @DBQuery(
+        text = "INSERT INTO EMPLOYEES(EMPLOYEEID,LASTNAME,FIRSTNAME) VALUES (EMPLOYEES_SEQ.NEXTVAL,?,?)")
+    @SuppressWarnings("findsecbugs:SQL_INJECTION_JDBC")
     public ResultSet createEmployee(String firstName, String lastName)
-            throws SQLException {
-
-        String queryText = "";
-        try {
-            queryText = getClass()
-                    .getDeclaredMethod("createEmployee", String.class,
-                            String.class)
-                    .getAnnotation(DBQuery.class).text();
-        } catch (NoSuchMethodException noSuchMethodException) {
-            logger.error("Method wasn't found", noSuchMethodException);
-        }
-
+        throws SQLException {
+        
+        String queryText =
+            new Object() {
+            }.getClass().getEnclosingMethod().getAnnotation(DBQuery.class)
+                .text();
+        
         logger.debug("Executing query {} with parameters {}, {}", queryText,
-                firstName, lastName);
-
-        PreparedStatement ps = dataSource.getConnection().prepareStatement(
-                queryText, new int[]{1});
+            firstName, lastName);
+        
+        ps = connection.prepareStatement(
+            queryText, new int[]{1});
         ps.setString(LAST_NAME_PARAMETER_NUMBER, lastName);
         ps.setString(FIRST_NAME_PARAMETER_NUMBER, firstName);
-
+        
         ps.execute();
-
+        
         ResultSet rs = ps.getGeneratedKeys();
-
+        
         logger.debug("Returning result set {}", rs);
-
+        
         return rs;
     }
-
+    
     @Override
     public void close() throws Exception {
-
+        if (ps != null) {
+            ps.close();
+        }
+        if (connection != null) {
+            connection.close();
+        }
     }
 }

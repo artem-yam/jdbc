@@ -19,9 +19,9 @@ public class OracleEmployeeDAO implements EmployeeDAO {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     /**
      * Number of ID column
      */
@@ -34,68 +34,66 @@ public class OracleEmployeeDAO implements EmployeeDAO {
      * Number of first name column
      */
     private static final int FIRST_NAME_COLUMN = 3;
-
+    
     /**
-     * Returns result sets
+     * Data source to connect DB
      */
-    private OracleEmployeeDAOResultSetsGetter rsGetter;
-
+    private DataSource dataSource;
+    
     /**
      * Class constructor
      *
      * @param dataSource {@link DataSource}
      */
     public OracleEmployeeDAO(DataSource dataSource) {
-        rsGetter = new OracleEmployeeDAOResultSetsGetter(dataSource);
-
+        this.dataSource = dataSource;
     }
-
-
+    
     @Override
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
-
-        try (ResultSet rs = rsGetter.getAllEmployees()) {
+        
+        try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(dataSource)
+                                .getAllEmployees()) {
             while (rs.next()) {
                 employees.add(
-                        new Employee(rs.getLong(ID_COLUMN), rs.getString(
-                                LAST_NAME_COLUMN), rs.getString(
-                                FIRST_NAME_COLUMN)));
+                    new Employee(rs.getLong(ID_COLUMN), rs.getString(
+                        LAST_NAME_COLUMN), rs.getString(
+                        FIRST_NAME_COLUMN)));
             }
         } catch (SQLException employeesSQLException) {
             logger.error("SQL error while receiving employees list",
-                    employeesSQLException);
+                employeesSQLException);
         }
-
+        
         logger.debug("Received employees list {}", employees);
-
+        
         return employees;
     }
-
-
+    
     @Override
     public Employee createEmployee(String firstName, String lastName) {
-
+        
         logger.debug("Starting employee {} {} creation", firstName, lastName);
-
+        
         Employee newEmployee = null;
-
-
-        try (ResultSet rs = rsGetter.createEmployee(firstName, lastName)) {
+        
+        try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(dataSource)
+                                .createEmployee(firstName, lastName)) {
             rs.next();
-
+            
             newEmployee =
-                    new Employee(rs.getLong(ID_COLUMN), lastName,
-                            firstName);
-
+                new Employee(rs.getLong(ID_COLUMN), lastName,
+                    firstName);
+            
         } catch (SQLException employeesSQLException) {
             logger.error("SQL error while creating new employee",
-                    employeesSQLException);
+                employeesSQLException);
         }
-
+        
         logger.debug("Employee {} was created", newEmployee);
-
+        
         return newEmployee;
     }
-
+    
 }

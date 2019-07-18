@@ -16,16 +16,16 @@ public class SessionListener implements HttpSessionListener {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     @Override
     public void sessionCreated(HttpSessionEvent ev) {
-        logger.info("New session " + ev.getSession().getId() + " was created");
+        logger.info("New session created");
     }
-
+    
     @Override
     public void sessionDestroyed(HttpSessionEvent ev) {
-        logger.info("Session " + ev.getSession().getId() + " was destroyed");
+        logger.info("Session destroyed");
     }
 }

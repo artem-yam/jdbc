@@ -18,22 +18,31 @@ public class CreateEmployeeCommand implements ActionCommand {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
+    /**
+     * First name parameter
+     */
+    private static final String FIRST_NAME_PARAMETER = "firstName";
+    /**
+     * Last name parameter
+     */
+    private static final String LAST_NAME_PARAMETER = "lastName";
+    
     @Override
     public GoToPageHandler execute(HttpServletRequest request) {
         DAOFactory factory = DAOFactory.getInstance(DAOType.ORACLE);
         EmployeeDAO employeeDAO = factory.getEmployeeDAO();
-
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-
+        
+        String firstName = request.getParameter(FIRST_NAME_PARAMETER);
+        String lastName = request.getParameter(LAST_NAME_PARAMETER);
+        
         employeeDAO.createEmployee(firstName, lastName);
-
-        logger.info("New employee {} {} was created in session {}", firstName,
-                lastName, request.getSession().getId());
-
+        
+        logger.info("New employee {} {} created", firstName,
+            lastName);
+        
         return new GoToPageHandler(GoToPageMethodEnum.REDIRECT, "");
     }
 }

@@ -16,7 +16,7 @@ public enum CommandEnum {
     /**
      * Command
      */
-    ActionCommand command;
+    protected ActionCommand command;
 
     /**
      * Command getter
