@@ -11,62 +11,91 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Employee DAO for oracle DB
+ */
 public class OracleEmployeeDAO implements EmployeeDAO {
+    /**
+     * Logger
+     */
     private static final Logger logger = LogManager
-                                             .getLogger(new Object() {
-                                             }.getClass().getEnclosingClass());
-    
+            .getLogger(new Object() {
+            }.getClass().getEnclosingClass());
+
+    /**
+     * Number of ID column
+     */
     private static final int ID_COLUMN = 1;
+    /**
+     * Number of last name column
+     */
     private static final int LAST_NAME_COLUMN = 2;
+    /**
+     * Number of first name column
+     */
     private static final int FIRST_NAME_COLUMN = 3;
-    
-    private DataSource dataSource;
-    private OracleEmployeeDAOWrapper wrapper;
-    
+
+    /**
+     * Returns result sets
+     */
+    private OracleEmployeeDAOResultSetsGetter rsGetter;
+
+    /**
+     * Class constructor
+     *
+     * @param dataSource {@link DataSource}
+     */
     public OracleEmployeeDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
-        wrapper = new OracleEmployeeDAOWrapper(dataSource);
-        
+        rsGetter = new OracleEmployeeDAOResultSetsGetter(dataSource);
+
     }
-    
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-    
+
+
     @Override
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
-        
-        try (ResultSet rs = wrapper.getAllEmployees()) {
+
+        try (ResultSet rs = rsGetter.getAllEmployees()) {
             while (rs.next()) {
                 employees.add(
-                    new Employee(rs.getLong(ID_COLUMN), rs.getString(
-                        LAST_NAME_COLUMN), rs.getString(
-                        FIRST_NAME_COLUMN)));
+                        new Employee(rs.getLong(ID_COLUMN), rs.getString(
+                                LAST_NAME_COLUMN), rs.getString(
+                                FIRST_NAME_COLUMN)));
             }
-        } catch (SQLException e) {
-            logger.error("SQL error while receiving employees list", e);
+        } catch (SQLException employeesSQLException) {
+            logger.error("SQL error while receiving employees list",
+                    employeesSQLException);
         }
-        
+
+        logger.debug("Received employees list {}", employees);
+
         return employees;
     }
-    
+
+
     @Override
     public Employee createEmployee(String firstName, String lastName) {
+
+        logger.debug("Starting employee {} {} creation", firstName, lastName);
+
         Employee newEmployee = null;
-        
-        try (ResultSet rs = wrapper.createEmployee(firstName, lastName)) {
+
+
+        try (ResultSet rs = rsGetter.createEmployee(firstName, lastName)) {
             rs.next();
-            
+
             newEmployee =
-                new Employee(rs.getLong(ID_COLUMN), lastName,
-                    firstName);
-            
-        } catch (SQLException e) {
-            logger.error("SQL error while creating new employee", e);
+                    new Employee(rs.getLong(ID_COLUMN), lastName,
+                            firstName);
+
+        } catch (SQLException employeesSQLException) {
+            logger.error("SQL error while creating new employee",
+                    employeesSQLException);
         }
-        
+
+        logger.debug("Employee {} was created", newEmployee);
+
         return newEmployee;
     }
-    
+
 }

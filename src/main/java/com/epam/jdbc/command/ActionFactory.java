@@ -1,25 +1,43 @@
 package com.epam.jdbc.command;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Command factory
+ */
 public class ActionFactory {
+    /**
+     * Logger
+     */
+    private static final Logger logger = LogManager
+            .getLogger(new Object() {
+            }.getClass().getEnclosingClass());
+
+    /**
+     * Defines which command to create
+     * @param request request for processing
+     * @return {@link ActionCommand}
+     */
     public ActionCommand defineCommand(HttpServletRequest request) {
-        ActionCommand current = new EmptyCommand();
-        
+        ActionCommand command = new MainPageCommand();
+
         String action = request.getParameter("command");
-        
-        System.out.println("command = " + action);
-        
+
         if (action != null && !action.isEmpty()) {
             try {
                 CommandEnum currentEnum =
-                    CommandEnum.valueOf(action.toUpperCase());
-                current = currentEnum.getCurrentCommand();
-            } catch (IllegalArgumentException e) {
-            
+                        CommandEnum.valueOf(action.toUpperCase());
+                command = currentEnum.getCurrentCommand();
+            } catch (IllegalArgumentException illegalArgumentException) {
+                logger.debug("Command wasn't found", illegalArgumentException);
             }
         }
-        
-        return current;
+
+        logger.debug("Returning command {}", command.getClass());
+
+        return command;
     }
 }

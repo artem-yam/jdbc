@@ -1,29 +1,64 @@
 package com.epam.jdbc;
 
+/**
+ * Defines web page and method to access this page
+ */
 public class GoToPageHandler {
-	private GoToPageMethodEnum method;
-	private String page;
+    /**
+     * Method to access page
+     */
+    private GoToPageMethodEnum method;
+    /**
+     * Web page
+     */
+    private String page;
 
-	public GoToPageHandler(GoToPageMethodEnum method, String page) {
-		super();
-		this.method = method;
-		this.page = page;
-	}
+    /**
+     * Constructor
+     *
+     * @param method Method to access page
+     * @param page   Web page
+     */
+    public GoToPageHandler(GoToPageMethodEnum method, String page) {
+        super();
+        this.method = method;
+        this.page = page;
+    }
 
-	public GoToPageMethodEnum getMethod() {
-		return method;
-	}
+    /**
+     * Method getter
+     *
+     * @return {@link GoToPageMethodEnum}
+     */
+    public GoToPageMethodEnum getMethod() {
+        return method;
+    }
 
-	public void setMethod(GoToPageMethodEnum method) {
-		this.method = method;
-	}
+    /**
+     * Method setter
+     *
+     * @param method {@link GoToPageMethodEnum}
+     */
+    public void setMethod(GoToPageMethodEnum method) {
+        this.method = method;
+    }
 
-	public String getPage() {
-		return page;
-	}
+    /**
+     * Page getter
+     *
+     * @return web page
+     */
+    public String getPage() {
+        return page;
+    }
 
-	public void setPage(String page) {
-		this.page = page;
-	}
+    /**
+     * Page setter
+     *
+     * @param page web page
+     */
+    public void setPage(String page) {
+        this.page = page;
+    }
 
 }

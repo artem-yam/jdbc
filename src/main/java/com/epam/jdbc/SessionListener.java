@@ -7,8 +7,14 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * Simple session listener
+ */
 @WebListener
 public class SessionListener implements HttpSessionListener {
+    /**
+     * Logger
+     */
     private static final Logger logger = LogManager
             .getLogger(new Object() {
             }.getClass().getEnclosingClass());
