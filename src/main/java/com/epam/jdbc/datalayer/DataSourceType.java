@@ -5,7 +5,7 @@ import com.epam.jdbc.datalayer.oracle.OracleDAOFactory;
 /**
  * Enum of supported DAO types
  */
-public enum DAOType {
+public enum DataSourceType {
     /**
      * Oracle DB
      */
@@ -14,7 +14,7 @@ public enum DAOType {
             return OracleDAOFactory.getInstance();
         }
     };
-
+    
     /**
      * Gets instance of certain DAO factory
      *

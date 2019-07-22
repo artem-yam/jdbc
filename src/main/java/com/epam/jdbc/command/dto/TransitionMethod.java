@@ -1,8 +1,8 @@
-package com.epam.jdbc;
+package com.epam.jdbc.command.dto;
 
 /**
  * Enum of methods to access pages
  */
-public enum GoToPageMethodEnum {
+public enum TransitionMethod {
     FORWARD, REDIRECT
 }

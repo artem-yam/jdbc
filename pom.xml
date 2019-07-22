@@ -62,7 +62,7 @@
                         </resource>
                     </webResources>
 
-                    <webXml>web\WEB-INF\web.xml</webXml>
+                    <webXml>web/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
 

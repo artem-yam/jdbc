@@ -19,9 +19,9 @@ public class OracleDAOFactory implements DAOFactory {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     /**
      * JNDI data source name
      */
@@ -34,14 +34,14 @@ public class OracleDAOFactory implements DAOFactory {
      * Data source to connect DB
      */
     private DataSource dataSource;
-
+    
     /**
      * Private constructor
      */
     private OracleDAOFactory() {
         logger.debug("New instance of {} created", this.getClass());
     }
-
+    
     /**
      * Class singleton instance getter
      *
@@ -51,22 +51,20 @@ public class OracleDAOFactory implements DAOFactory {
         OracleDAOFactory factory = instance;
         if (factory == null) {
             synchronized (OracleDAOFactory.class) {
-                factory = instance;
-                if (factory == null) {
-                    instance = factory = new OracleDAOFactory();
-                    factory.getDataSource();
-                }
+                instance = factory = new OracleDAOFactory();
+                factory.getDataSource();
             }
         }
+        
         return factory;
     }
-
+    
     /**
      * Data source getter
      */
     private void getDataSource() {
         Locale.setDefault(Locale.ENGLISH);
-
+        
         Context ctx;
         try {
             ctx = new InitialContext();
@@ -74,13 +72,12 @@ public class OracleDAOFactory implements DAOFactory {
             ctx.close();
         } catch (NamingException namingException) {
             logger.error("Error while receiving data source object",
-                    namingException);
+                namingException);
         }
-
+        
         logger.debug("Data source received {}", dataSource);
     }
-
-
+    
     /**
      * Oracle DB employee DAO getter
      *

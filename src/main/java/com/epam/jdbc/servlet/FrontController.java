@@ -1,7 +1,10 @@
-package com.epam.jdbc;
+package com.epam.jdbc.servlet;
 
 import com.epam.jdbc.command.ActionCommand;
 import com.epam.jdbc.command.ActionFactory;
+import com.epam.jdbc.command.dto.TransitionInformation;
+import com.epam.jdbc.command.dto.TransitionMethod;
+import com.epam.jdbc.command.parameters.ParametersFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,10 +16,10 @@ import java.io.IOException;
 /**
  * Simple servlet
  */
-public class Servlet extends HttpServlet {
+public class FrontController extends HttpServlet {
     
     /**
-     * Servlet serialVersionUID
+     * FrontController serialVersionUID
      */
     private static final long serialVersionUID = 1L;
     
@@ -24,14 +27,15 @@ public class Servlet extends HttpServlet {
     public void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
         
-        ActionFactory client = new ActionFactory();
-        ActionCommand command = client.defineCommand(req);
+        ActionCommand command = new ActionFactory().defineCommand(req);
         
-        GoToPageHandler pageHandler = command.execute(req);
+        new ParametersFactory().defineParameters(req.getParameterMap());
+        
+        TransitionInformation pageHandler = command.execute(req);
         
         if (pageHandler != null) {
             
-            GoToPageMethodEnum method = pageHandler.getMethod();
+            TransitionMethod method = pageHandler.getMethod();
             
             switch (method) {
                 case FORWARD:

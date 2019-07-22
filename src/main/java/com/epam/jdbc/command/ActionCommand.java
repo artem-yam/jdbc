@@ -1,6 +1,6 @@
 package com.epam.jdbc.command;
 
-import com.epam.jdbc.GoToPageHandler;
+import com.epam.jdbc.command.dto.TransitionInformation;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletRequest;
  * Command interface
  */
 public interface ActionCommand {
-
+    
     /**
      * Executes current command
      *
-     * @param request request for processing
-     * @return {@link GoToPageHandler}
+     * @return {@link TransitionInformation}
      */
-    GoToPageHandler execute(HttpServletRequest request);
+    TransitionInformation execute(HttpServletRequest req);
 }

@@ -1,9 +1,9 @@
 package com.epam.jdbc.command;
 
-import com.epam.jdbc.GoToPageHandler;
-import com.epam.jdbc.GoToPageMethodEnum;
+import com.epam.jdbc.command.dto.TransitionInformation;
+import com.epam.jdbc.command.dto.TransitionMethod;
 import com.epam.jdbc.datalayer.DAOFactory;
-import com.epam.jdbc.datalayer.DAOType;
+import com.epam.jdbc.datalayer.DataSourceType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,17 +23,17 @@ public class MainPageCommand implements ActionCommand {
     /**
      * Main page
      */
-    private static final String INDEX_PAGE = "/jsp/main.jsp";
+    private static final String INDEX_PAGE = "/WEB-INF/jsp/main.jsp";
     
     @Override
-    public GoToPageHandler execute(HttpServletRequest request) {
-        DAOFactory factory = DAOFactory.getInstance(DAOType.ORACLE);
+    public TransitionInformation execute(HttpServletRequest req) {
+        DAOFactory factory = DAOFactory.getInstance(DataSourceType.ORACLE);
         
-        request.setAttribute("employees",
+        req.setAttribute("employees",
             factory.getEmployeeDAO().getAllEmployees());
         
         logger.info("Redirecting to main page");
         
-        return new GoToPageHandler(GoToPageMethodEnum.FORWARD, INDEX_PAGE);
+        return new TransitionInformation(TransitionMethod.FORWARD, INDEX_PAGE);
     }
 }

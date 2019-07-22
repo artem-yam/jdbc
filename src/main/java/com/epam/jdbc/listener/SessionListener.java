@@ -1,4 +1,4 @@
-package com.epam.jdbc;
+package com.epam.jdbc.listener;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,11 +21,11 @@ public class SessionListener implements HttpSessionListener {
     
     @Override
     public void sessionCreated(HttpSessionEvent ev) {
-        logger.info("New session created");
+        logger.info("New session created {}", ev.getSession().getId());
     }
     
     @Override
     public void sessionDestroyed(HttpSessionEvent ev) {
-        logger.info("Session destroyed");
+        logger.info("Session destroyed {}", ev.getSession().getId());
     }
 }

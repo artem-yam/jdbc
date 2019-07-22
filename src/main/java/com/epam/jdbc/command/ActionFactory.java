@@ -34,11 +34,11 @@ public class ActionFactory {
         
         if (action != null && !action.isEmpty()) {
             try {
-                CommandEnum currentEnum =
-                    CommandEnum.valueOf(action.toUpperCase());
+                Command currentEnum =
+                    Command.valueOf(action.toUpperCase());
                 command = currentEnum.getCurrentCommand();
             } catch (IllegalArgumentException illegalArgumentException) {
-                logger.debug("Command wasn't found", illegalArgumentException);
+                logger.debug("Command not found", illegalArgumentException);
             }
         }
         

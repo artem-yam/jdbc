@@ -1,48 +1,48 @@
-package com.epam.jdbc;
+package com.epam.jdbc.command.dto;
 
 /**
  * Defines web page and method to access this page
  */
-public class GoToPageHandler {
+public class TransitionInformation {
     /**
      * Method to access page
      */
-    private GoToPageMethodEnum method;
+    private TransitionMethod method;
     /**
      * Web page
      */
     private String page;
-
+    
     /**
      * Constructor
      *
      * @param method Method to access page
      * @param page   Web page
      */
-    public GoToPageHandler(GoToPageMethodEnum method, String page) {
+    public TransitionInformation(TransitionMethod method, String page) {
         super();
         this.method = method;
         this.page = page;
     }
-
+    
     /**
      * Method getter
      *
-     * @return {@link GoToPageMethodEnum}
+     * @return {@link TransitionMethod}
      */
-    public GoToPageMethodEnum getMethod() {
+    public TransitionMethod getMethod() {
         return method;
     }
-
+    
     /**
      * Method setter
      *
-     * @param method {@link GoToPageMethodEnum}
+     * @param method {@link TransitionMethod}
      */
-    public void setMethod(GoToPageMethodEnum method) {
+    public void setMethod(TransitionMethod method) {
         this.method = method;
     }
-
+    
     /**
      * Page getter
      *
@@ -51,7 +51,7 @@ public class GoToPageHandler {
     public String getPage() {
         return page;
     }
-
+    
     /**
      * Page setter
      *
@@ -60,5 +60,5 @@ public class GoToPageHandler {
     public void setPage(String page) {
         this.page = page;
     }
-
+    
 }

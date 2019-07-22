@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,17 +54,24 @@ public class OracleEmployeeDAO implements EmployeeDAO {
     public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
         
-        try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(dataSource)
-                                .getAllEmployees()) {
-            while (rs.next()) {
-                employees.add(
-                    new Employee(rs.getLong(ID_COLUMN), rs.getString(
-                        LAST_NAME_COLUMN), rs.getString(
-                        FIRST_NAME_COLUMN)));
+        try {
+            Connection con = dataSource.getConnection();
+            
+            try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(con)
+                                    .getAllEmployees()) {
+                while (rs.next()) {
+                    employees.add(
+                        new Employee(rs.getLong(ID_COLUMN), rs.getString(
+                            LAST_NAME_COLUMN), rs.getString(
+                            FIRST_NAME_COLUMN)));
+                }
+            } catch (SQLException employeesSQLException) {
+                logger.error("SQL error while receiving employees list",
+                    employeesSQLException);
             }
-        } catch (SQLException employeesSQLException) {
-            logger.error("SQL error while receiving employees list",
-                employeesSQLException);
+        } catch (SQLException connectionError) {
+            logger.error("DB connection error",
+                connectionError);
         }
         
         logger.debug("Received employees list {}", employees);
@@ -78,7 +86,8 @@ public class OracleEmployeeDAO implements EmployeeDAO {
         
         Employee newEmployee = null;
         
-        try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(dataSource)
+        try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(
+            dataSource.getConnection())
                                 .createEmployee(firstName, lastName)) {
             rs.next();
             

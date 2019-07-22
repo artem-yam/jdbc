@@ -8,10 +8,10 @@ public interface DAOFactory {
     /**
      * Gets instance of certain DAOFactory
      *
-     * @param type {@link DAOType}
+     * @param type {@link DataSourceType}
      * @return {@link DAOFactory}
      */
-    static DAOFactory getInstance(DAOType type) {
+    static DAOFactory getInstance(DataSourceType type) {
         return type.getDAOFactory();
     }
 
