@@ -1,6 +1,7 @@
 package com.epam.jdbc.datalayer;
 
 import com.epam.jdbc.datalayer.dto.Employee;
+import com.epam.jdbc.datalayer.exception.DataReceiveException;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface EmployeeDAO {
      *
      * @return List of {@link Employee}
      */
-    List<Employee> getAllEmployees();
+    List<Employee> getAllEmployees() throws DataReceiveException;
 
     /**
      * Creates new employee
@@ -23,5 +24,6 @@ public interface EmployeeDAO {
      * @param lastName  new employee last name
      * @return created {@link Employee}
      */
-    Employee createEmployee(String firstName, String lastName);
+    Employee createEmployee(String firstName, String lastName)
+            throws DataReceiveException;
 }
