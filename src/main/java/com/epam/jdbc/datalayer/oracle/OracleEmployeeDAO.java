@@ -21,9 +21,9 @@ public class OracleEmployeeDAO implements EmployeeDAO {
      * Logger
      */
     private static final Logger logger = LogManager
-            .getLogger(new Object() {
-            }.getClass().getEnclosingClass());
-
+                                             .getLogger(new Object() {
+                                             }.getClass().getEnclosingClass());
+    
     /**
      * Number of ID column
      */
@@ -36,17 +36,23 @@ public class OracleEmployeeDAO implements EmployeeDAO {
      * Number of first name column
      */
     private static final int FIRST_NAME_COLUMN = 3;
-
+    
+    /**
+     * Message for error while connecting DB
+     */
     private static final String CONNECTION_ERROR_MESSAGE =
-            "DB connection error";
+        "DB connection error";
+    /**
+     * Message for error while interacting with DB
+     */
     private static final String DB_INTERACTION_ERROR_MESSAGE =
-            "DB interaction error";
-
+        "DB interaction error";
+    
     /**
      * Data source to connect DB
      */
     private DataSource dataSource;
-
+    
     /**
      * Class constructor
      *
@@ -55,75 +61,67 @@ public class OracleEmployeeDAO implements EmployeeDAO {
     public OracleEmployeeDAO(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
+    
     @Override
     public List<Employee> getAllEmployees() throws DataReceiveException {
         List<Employee> employees = new ArrayList<>();
-
+        
         try {
             Connection con = dataSource.getConnection();
-
-            try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(
-                    con).getAllEmployees()) {
+            
+            try (ResultSet rs = new OracleResultSetsGetter(
+                con).getAllEmployees()) {
                 while (rs.next()) {
                     employees.add(
-                            new Employee(rs.getLong(ID_COLUMN), rs.getString(
-                                    LAST_NAME_COLUMN), rs.getString(
-                                    FIRST_NAME_COLUMN)));
+                        new Employee(rs.getLong(ID_COLUMN), rs.getString(
+                            LAST_NAME_COLUMN), rs.getString(
+                            FIRST_NAME_COLUMN)));
                 }
             } catch (SQLException employeesSQLException) {
-                logger.error("SQL error while receiving employees list",
-                        employeesSQLException);
                 throw new DataReceiveException(DB_INTERACTION_ERROR_MESSAGE,
-                        employeesSQLException);
+                    employeesSQLException);
             }
         } catch (SQLException connectionError) {
-            logger.error("DB connection error",
-                    connectionError);
             throw new DataReceiveException(CONNECTION_ERROR_MESSAGE,
-                    connectionError);
+                connectionError);
         }
-
+        
         logger.debug("Received employees list {}", employees);
-
+        
         return employees;
     }
-
+    
     @Override
     public Employee createEmployee(String firstName, String lastName)
-            throws DataReceiveException {
-
+        throws DataReceiveException {
+        
         logger.debug("Starting employee {} {} creation", firstName, lastName);
-
+        
         Employee newEmployee;
-
+        
         try {
             Connection con = dataSource.getConnection();
-
-            try (ResultSet rs = new OracleEmployeeDAOResultSetsGetter(
-                    con).createEmployee(firstName, lastName)) {
+            
+            try (ResultSet rs = new OracleResultSetsGetter(
+                con).createEmployee(firstName, lastName)) {
                 rs.next();
-
+                
                 newEmployee =
-                        new Employee(rs.getLong(ID_COLUMN), lastName,
-                                firstName);
-
+                    new Employee(rs.getLong(ID_COLUMN), lastName,
+                        firstName);
+                
             } catch (SQLException employeesSQLException) {
-                logger.error("SQL error while creating new employee",
-                        employeesSQLException);
                 throw new DataReceiveException(DB_INTERACTION_ERROR_MESSAGE,
-                        employeesSQLException);
+                    employeesSQLException);
             }
         } catch (SQLException connectionError) {
-            logger.error("DB connection error",
-                    connectionError);
             throw new DataReceiveException(CONNECTION_ERROR_MESSAGE,
-                    connectionError);
+                connectionError);
         }
-
+        
         logger.debug("Employee {} was created", newEmployee);
-
+        
         return newEmployee;
     }
-
+    
 }

@@ -1,5 +1,7 @@
 package com.epam.jdbc.command.dto;
 
+import java.util.Map;
+
 /**
  * Defines web page and method to access this page
  */
@@ -14,15 +16,22 @@ public class TransitionInformation {
     private String page;
     
     /**
+     * Parameters to be set on page
+     */
+    private Map<String, Object> parametersToSet;
+    
+    /**
      * Constructor
      *
      * @param method Method to access page
      * @param page   Web page
      */
-    public TransitionInformation(TransitionMethod method, String page) {
+    public TransitionInformation(TransitionMethod method, String page,
+                                 Map<String, Object> parametersToSet) {
         super();
         this.method = method;
         this.page = page;
+        this.parametersToSet = parametersToSet;
     }
     
     /**
@@ -35,15 +44,6 @@ public class TransitionInformation {
     }
     
     /**
-     * Method setter
-     *
-     * @param method {@link TransitionMethod}
-     */
-    public void setMethod(TransitionMethod method) {
-        this.method = method;
-    }
-    
-    /**
      * Page getter
      *
      * @return web page
@@ -53,12 +53,11 @@ public class TransitionInformation {
     }
     
     /**
-     * Page setter
+     * Parameters getter
      *
-     * @param page web page
+     * @return parameters map
      */
-    public void setPage(String page) {
-        this.page = page;
+    public Map<String, Object> getParametersToSet() {
+        return parametersToSet;
     }
-    
 }

@@ -5,13 +5,16 @@ package com.epam.jdbc.command;
  */
 public enum Command {
     /**
-     * Enum value for CreateEmployeeCommand
+     * Enum value for MainPageCommand
      */
     MAINPAGE {
         {
             this.command = new MainPageCommand();
         }
     },
+    /**
+     * Enum value for CreateEmployeeCommand
+     */
     CREATEEMPLOYEE {
         {
             this.command = new CreateEmployeeCommand();

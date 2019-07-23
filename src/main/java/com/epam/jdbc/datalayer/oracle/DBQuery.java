@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation defines method containing sql query
+ * Defines method containing sql query
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

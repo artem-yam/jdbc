@@ -3,7 +3,7 @@ package com.epam.jdbc.command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Command factory
@@ -24,21 +24,25 @@ public class ActionFactory {
     /**
      * Defines which command to create
      *
-     * @param request request for processing
+     * @param requestParameters request parameters
      * @return {@link ActionCommand}
      */
-    public ActionCommand defineCommand(HttpServletRequest request) {
+    public ActionCommand defineCommand(
+        Map<String, String[]> requestParameters) {
         ActionCommand command = new MainPageCommand();
         
-        String action = request.getParameter(COMMAND_PARAMETER);
-        
-        if (action != null && !action.isEmpty()) {
-            try {
-                Command currentEnum =
-                    Command.valueOf(action.toUpperCase());
-                command = currentEnum.getCurrentCommand();
-            } catch (IllegalArgumentException illegalArgumentException) {
-                logger.debug("Command not found", illegalArgumentException);
+        if (requestParameters.containsKey(COMMAND_PARAMETER)) {
+            
+            String action = requestParameters.get(COMMAND_PARAMETER)[0];
+            
+            if (action != null && !action.isEmpty()) {
+                try {
+                    Command currentEnum =
+                        Command.valueOf(action.toUpperCase());
+                    command = currentEnum.getCurrentCommand();
+                } catch (IllegalArgumentException illegalArgumentException) {
+                    logger.debug("Unknown command ", illegalArgumentException);
+                }
             }
         }
         

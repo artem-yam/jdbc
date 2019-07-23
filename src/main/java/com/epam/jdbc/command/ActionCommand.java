@@ -7,7 +7,7 @@ import com.epam.jdbc.command.parameters.CommandParameters;
  * Command interface
  */
 public interface ActionCommand {
-
+    
     /**
      * Executes current command
      *

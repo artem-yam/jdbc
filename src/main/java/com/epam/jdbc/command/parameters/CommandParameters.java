@@ -2,26 +2,23 @@ package com.epam.jdbc.command.parameters;
 
 import com.epam.jdbc.datalayer.DataSourceType;
 
-import javax.servlet.http.HttpSession;
-
+/**
+ * Parameters used in common command
+ */
 public class CommandParameters {
-
+    
+    /**
+     * Type of used data source
+     */
     private DataSourceType dataSourceType = DataSourceType.ORACLE;
-    private HttpSession session;
-
+    
+    /**
+     * Data source type getter
+     *
+     * @return enum value for some data source {@link DataSourceType}
+     */
     public DataSourceType getDataSourceType() {
         return dataSourceType;
     }
-
-    public void setDataSourceType(DataSourceType dataSourceType) {
-        this.dataSourceType = dataSourceType;
-    }
-
-    public HttpSession getSession() {
-        return session;
-    }
-
-    public void setSession(HttpSession session) {
-        this.session = session;
-    }
+    
 }

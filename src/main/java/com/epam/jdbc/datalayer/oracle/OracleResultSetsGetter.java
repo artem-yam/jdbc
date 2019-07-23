@@ -11,7 +11,7 @@ import java.sql.SQLException;
 /**
  * Accesses DB and returns queries result sets
  */
-public class OracleEmployeeDAOResultSetsGetter implements AutoCloseable {
+public class OracleResultSetsGetter implements AutoCloseable {
     /**
      * Logger
      */
@@ -43,7 +43,7 @@ public class OracleEmployeeDAOResultSetsGetter implements AutoCloseable {
      *
      * @param connection {@link Connection}
      */
-    public OracleEmployeeDAOResultSetsGetter(Connection connection) {
+    public OracleResultSetsGetter(Connection connection) {
         this.connection = connection;
     }
     
@@ -53,7 +53,7 @@ public class OracleEmployeeDAOResultSetsGetter implements AutoCloseable {
      * @return Query {@link ResultSet}
      * @throws SQLException DB error
      */
-    @DBQuery(text = "SELECT * FROM EMPLOYEES")
+    @DBQuery(text = "SELECT * FROM EMPLOYEES ORDER BY EMPLOYEEID")
     @SuppressWarnings("findsecbugs:SQL_INJECTION_JDBC")
     public ResultSet getAllEmployees() throws SQLException {
         
