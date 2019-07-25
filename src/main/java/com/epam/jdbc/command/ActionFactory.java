@@ -10,12 +10,15 @@ import java.util.Map;
  */
 public class ActionFactory {
     /**
+     * Index of parameter value
+     */
+    public static final int PARAMETER_VALUE_INDEX = 0;
+    /**
      * Logger
      */
     private static final Logger logger = LogManager
                                              .getLogger(new Object() {
                                              }.getClass().getEnclosingClass());
-    
     /**
      * Command parameter name
      */
@@ -33,7 +36,8 @@ public class ActionFactory {
         
         if (requestParameters.containsKey(COMMAND_PARAMETER)) {
             
-            String action = requestParameters.get(COMMAND_PARAMETER)[0];
+            String action =
+                requestParameters.get(COMMAND_PARAMETER)[PARAMETER_VALUE_INDEX];
             
             if (action != null && !action.isEmpty()) {
                 try {

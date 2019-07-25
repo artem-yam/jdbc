@@ -27,6 +27,7 @@ public class OracleResultSetsGetter implements AutoCloseable {
      * Number of parameter for first name
      */
     private static final int FIRST_NAME_PARAMETER_NUMBER = 2;
+    public static final int GENERATED_KEYS_INDEX = 1;
     
     /**
      * DD connection
@@ -96,7 +97,7 @@ public class OracleResultSetsGetter implements AutoCloseable {
             firstName, lastName);
         
         ps = connection.prepareStatement(
-            queryText, new int[]{1});
+            queryText, new int[]{GENERATED_KEYS_INDEX});
         ps.setString(LAST_NAME_PARAMETER_NUMBER, lastName);
         ps.setString(FIRST_NAME_PARAMETER_NUMBER, firstName);
         

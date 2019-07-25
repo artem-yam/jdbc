@@ -3,8 +3,8 @@ package com.epam.jdbc.command;
 import com.epam.jdbc.command.dto.TransitionInformation;
 import com.epam.jdbc.command.dto.TransitionMethod;
 import com.epam.jdbc.command.parameters.CommandParameters;
-import com.epam.jdbc.command.parameters.HasParameters;
 import com.epam.jdbc.datalayer.DAOFactory;
+import com.epam.jdbc.datalayer.DataSourceType;
 import com.epam.jdbc.datalayer.exception.DataReceiveException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,6 @@ import java.util.Map;
 /**
  * Command to redirect to main page
  */
-@HasParameters(parameters = CommandParameters.class)
 public class MainPageCommand implements ActionCommand {
     /**
      * Logger
@@ -47,7 +46,7 @@ public class MainPageCommand implements ActionCommand {
     public TransitionInformation execute(CommandParameters parameters) {
         
         DAOFactory factory =
-            DAOFactory.getInstance(parameters.getDataSourceType());
+            DAOFactory.getInstance(DataSourceType.ORACLE);
         
         Map<String, Object> parametersToSet = new HashMap<>();
         

@@ -18,7 +18,7 @@ public class TransitionInformation {
     /**
      * Parameters to be set on page
      */
-    private Map<String, Object> parametersToSet;
+    private Map<String, Object> displayData;
     
     /**
      * Constructor
@@ -31,7 +31,7 @@ public class TransitionInformation {
         super();
         this.method = method;
         this.page = page;
-        this.parametersToSet = parametersToSet;
+        this.displayData = parametersToSet;
     }
     
     /**
@@ -57,7 +57,7 @@ public class TransitionInformation {
      *
      * @return parameters map
      */
-    public Map<String, Object> getParametersToSet() {
-        return parametersToSet;
+    public Map<String, Object> getDisplayData() {
+        return displayData;
     }
 }

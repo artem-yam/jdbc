@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,11 +37,6 @@ public class OracleEmployeeDAO implements EmployeeDAO {
     private static final int FIRST_NAME_COLUMN = 3;
     
     /**
-     * Message for error while connecting DB
-     */
-    private static final String CONNECTION_ERROR_MESSAGE =
-        "DB connection error";
-    /**
      * Message for error while interacting with DB
      */
     private static final String DB_INTERACTION_ERROR_MESSAGE =
@@ -66,24 +60,17 @@ public class OracleEmployeeDAO implements EmployeeDAO {
     public List<Employee> getAllEmployees() throws DataReceiveException {
         List<Employee> employees = new ArrayList<>();
         
-        try {
-            Connection con = dataSource.getConnection();
-            
-            try (ResultSet rs = new OracleResultSetsGetter(
-                con).getAllEmployees()) {
-                while (rs.next()) {
-                    employees.add(
-                        new Employee(rs.getLong(ID_COLUMN), rs.getString(
-                            LAST_NAME_COLUMN), rs.getString(
-                            FIRST_NAME_COLUMN)));
-                }
-            } catch (SQLException employeesSQLException) {
-                throw new DataReceiveException(DB_INTERACTION_ERROR_MESSAGE,
-                    employeesSQLException);
+        try (ResultSet rs = new OracleResultSetsGetter(
+            dataSource.getConnection()).getAllEmployees()) {
+            while (rs.next()) {
+                employees.add(
+                    new Employee(rs.getLong(ID_COLUMN), rs.getString(
+                        LAST_NAME_COLUMN), rs.getString(
+                        FIRST_NAME_COLUMN)));
             }
-        } catch (SQLException connectionError) {
-            throw new DataReceiveException(CONNECTION_ERROR_MESSAGE,
-                connectionError);
+        } catch (SQLException employeesSQLException) {
+            throw new DataReceiveException(DB_INTERACTION_ERROR_MESSAGE,
+                employeesSQLException);
         }
         
         logger.debug("Received employees list {}", employees);
@@ -99,24 +86,17 @@ public class OracleEmployeeDAO implements EmployeeDAO {
         
         Employee newEmployee;
         
-        try {
-            Connection con = dataSource.getConnection();
+        try (ResultSet rs = new OracleResultSetsGetter(
+            dataSource.getConnection()).createEmployee(firstName, lastName)) {
+            rs.next();
             
-            try (ResultSet rs = new OracleResultSetsGetter(
-                con).createEmployee(firstName, lastName)) {
-                rs.next();
-                
-                newEmployee =
-                    new Employee(rs.getLong(ID_COLUMN), lastName,
-                        firstName);
-                
-            } catch (SQLException employeesSQLException) {
-                throw new DataReceiveException(DB_INTERACTION_ERROR_MESSAGE,
-                    employeesSQLException);
-            }
-        } catch (SQLException connectionError) {
-            throw new DataReceiveException(CONNECTION_ERROR_MESSAGE,
-                connectionError);
+            newEmployee =
+                new Employee(rs.getLong(ID_COLUMN), lastName,
+                    firstName);
+            
+        } catch (SQLException employeesSQLException) {
+            throw new DataReceiveException(DB_INTERACTION_ERROR_MESSAGE,
+                employeesSQLException);
         }
         
         logger.debug("Employee {} was created", newEmployee);

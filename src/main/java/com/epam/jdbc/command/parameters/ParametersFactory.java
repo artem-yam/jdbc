@@ -12,7 +12,10 @@ import java.util.Map;
  * Parameters factory
  */
 public class ParametersFactory {
-    
+    /**
+     * Index of parameter value
+     */
+    public static final int PARAMETER_VALUE_INDEX = 0;
     /**
      * Command using parameters
      */
@@ -39,13 +42,11 @@ public class ParametersFactory {
         Map<String, String[]> requestParameters)
         throws IllegalAccessException, InstantiationException {
         
+        Class paramsClass = CommandParameters.class;
         CommandParameters params =
-            command.getClass().getAnnotation(HasParameters.class)
-                .parameters().newInstance();
+            (CommandParameters) paramsClass.newInstance();
         
         List<Field> fields = new ArrayList<>();
-        
-        Class paramsClass = params.getClass();
         
         do {
             fields.addAll(Arrays.asList(paramsClass.getDeclaredFields()));
@@ -58,7 +59,8 @@ public class ParametersFactory {
             if (requestParameters.containsKey(field.getName())) {
                 field.setAccessible(true);
                 field.set(params,
-                    requestParameters.get(field.getName())[0]);
+                    requestParameters
+                        .get(field.getName())[PARAMETER_VALUE_INDEX]);
             }
         }
         

@@ -1,24 +1,34 @@
 package com.epam.jdbc.command.parameters;
 
-import com.epam.jdbc.datalayer.DataSourceType;
-
 /**
- * Parameters used in common command
+ * Parameters used in command
  */
 public class CommandParameters {
     
     /**
-     * Type of used data source
+     * New employee last name
      */
-    private DataSourceType dataSourceType = DataSourceType.ORACLE;
+    private String lastName;
+    /**
+     * New employee first name
+     */
+    private String firstName;
     
     /**
-     * Data source type getter
+     * First name getter
      *
-     * @return enum value for some data source {@link DataSourceType}
+     * @return first name
      */
-    public DataSourceType getDataSourceType() {
-        return dataSourceType;
+    public String getFirstName() {
+        return firstName;
     }
     
+    /**
+     * Last name getter
+     *
+     * @return Last name
+     */
+    public String getLastName() {
+        return lastName;
+    }
 }

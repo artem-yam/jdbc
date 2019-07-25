@@ -3,9 +3,8 @@ package com.epam.jdbc.command;
 import com.epam.jdbc.command.dto.TransitionInformation;
 import com.epam.jdbc.command.dto.TransitionMethod;
 import com.epam.jdbc.command.parameters.CommandParameters;
-import com.epam.jdbc.command.parameters.CreateEmployeeParameters;
-import com.epam.jdbc.command.parameters.HasParameters;
 import com.epam.jdbc.datalayer.DAOFactory;
+import com.epam.jdbc.datalayer.DataSourceType;
 import com.epam.jdbc.datalayer.EmployeeDAO;
 import com.epam.jdbc.datalayer.exception.DataReceiveException;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +16,6 @@ import java.util.Map;
 /**
  * Command to create new employee
  */
-@HasParameters(parameters = CreateEmployeeParameters.class)
 public class CreateEmployeeCommand implements ActionCommand {
     
     /**
@@ -42,18 +40,16 @@ public class CreateEmployeeCommand implements ActionCommand {
     public TransitionInformation execute(CommandParameters parameters) {
         
         DAOFactory factory =
-            DAOFactory.getInstance(parameters.getDataSourceType());
+            DAOFactory.getInstance(DataSourceType.ORACLE);
         EmployeeDAO employeeDAO = factory.getEmployeeDAO();
         
         String firstName;
         String lastName;
-        Map<String, Object> parametersToSet = new HashMap<>();
+        Map<String, Object> displayData = new HashMap<>();
         
         try {
-            firstName =
-                ((CreateEmployeeParameters) parameters).getFirstName();
-            lastName =
-                ((CreateEmployeeParameters) parameters).getLastName();
+            firstName = parameters.getFirstName();
+            lastName = parameters.getLastName();
             
             employeeDAO.createEmployee(firstName, lastName);
             
@@ -61,14 +57,11 @@ public class CreateEmployeeCommand implements ActionCommand {
                 lastName);
         } catch (DataReceiveException dataReceiveException) {
             logger.error("DB error", dataReceiveException);
-            parametersToSet.put(ERROR_ATTRIBUTE, String.format(ERROR_MESSAGE,
+            displayData.put(ERROR_ATTRIBUTE, String.format(ERROR_MESSAGE,
                 dataReceiveException.getMessage()));
-        } catch (ClassCastException classCastException) {
-            logger.error("Can't cast to required command parameters class",
-                classCastException);
         }
         
         return new TransitionInformation(TransitionMethod.REDIRECT, "",
-            parametersToSet);
+            displayData);
     }
 }
